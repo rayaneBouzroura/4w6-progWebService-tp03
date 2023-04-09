@@ -2,7 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.IdentityModel.Tokens;
 using SuperGalerieInfinie.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace SuperGalerieInfinie.Controllers
 {
@@ -49,6 +53,43 @@ namespace SuperGalerieInfinie.Controllers
             }
             
 
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Login(LoginDTO login)
+        {
+            //recup du user
+            Utilisateur utilisateur = await UtilisateurManager.FindByNameAsync(login.Username);
+
+            if(utilisateur != null && await UtilisateurManager.CheckPasswordAsync(utilisateur , login.Password))
+            {
+                IList<string> roles = await UtilisateurManager.GetRolesAsync(utilisateur);//recup les roles
+                List<Claim> authClaims = new List<Claim>();
+                foreach (string role in roles)
+                {
+                    authClaims.Add(new Claim(ClaimTypes.Role, role));//met le claim dans la liste authClaims tadaa
+                }
+                authClaims.Add(new Claim(ClaimTypes.NameIdentifier, utilisateur.Id));
+                SymmetricSecurityKey key = new SymmetricSecurityKey(
+                                           Encoding.UTF8.GetBytes("phrase suppppeeRR Long woooHoo Heck yeaaah je deprime."));
+                JwtSecurityToken token = new JwtSecurityToken(
+                    issuer: "https://localhost:7008",
+                    audience : "https://localhost:4200",
+                    claims: authClaims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
+                    );
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    ValidTo = token.ValidTo
+
+                });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "nom d'utilisateur et pw invalid" });
+            }
         }
         [HttpPost]
         public async Task<IActionResult> hello()

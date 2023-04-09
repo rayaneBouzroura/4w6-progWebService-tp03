@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using SuperGalerieInfinie.Data;
 using SuperGalerieInfinie.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SuperGalerieInfinieContext>(options =>
@@ -33,6 +36,25 @@ builder.Services.AddCors(options =>
         policy.AllowAnyMethod();
         policy.AllowAnyHeader();
     });
+});
+//gerer l'authentification
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;//duringe dev
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidAudience = "https://localhost:4200/",
+        ValidIssuer = "https://localhost:7008",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("phrase suppppeeRR Long woooHoo Heck yeaaah je deprime."))
+    };
 });
 
 // Ajoutez cette ligne pour ajouter les services d'autorisation
