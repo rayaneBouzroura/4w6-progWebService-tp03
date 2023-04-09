@@ -28,7 +28,6 @@ export class RegisterComponent implements OnInit {
       password: this.registerPassword,
       passwordConfirm: this.registerPasswordConfirm
     };
-
     ////appelle post oau niveau du endpoint api/Utilisateurs action Register qui prend un objet registerDTO
     const response = await lastValueFrom(this.http.post<any>('https://localhost:7008/api/Utilisateurs/Register', registerDTO));
     console.log(response);

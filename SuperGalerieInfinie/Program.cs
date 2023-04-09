@@ -22,6 +22,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
 });
 //gestion cors
 builder.Services.AddCors(options =>

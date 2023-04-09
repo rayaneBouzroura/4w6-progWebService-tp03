@@ -30,14 +30,14 @@ namespace SuperGalerieInfinie.Controllers
             var user = new Utilisateur
             {
                 UserName = register.Username,
-                Email = register.Email
+                Email = register.Email,
             };
 
             // Ajouter l'utilisateur à la base de données avec le mot de passe
-            var result = await UtilisateurManager.CreateAsync(user, register.Password);
+            IdentityResult identityResult = await UtilisateurManager.CreateAsync(user, register.Password);
 
             // Vérifier si la création a réussi
-            if (result.Succeeded)
+            if (identityResult.Succeeded)
             {
                 return Ok( new {Message = " wooohooo 😎😎"});
             }
@@ -47,6 +47,13 @@ namespace SuperGalerieInfinie.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                         new {Message =   "La création de l'utilisateur a échoué." });
             }
+            
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> hello()
+        {
+            return Ok(new {Message= "OK"});
         }
     }
 
