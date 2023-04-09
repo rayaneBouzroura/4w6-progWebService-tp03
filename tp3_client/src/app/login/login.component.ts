@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
     const response = await lastValueFrom(this.http.post<any>('https://localhost:7008/api/Utilisateurs/Login', loginDTO));
     //print la reponse
     console.log(response);
+    //save le token dans le local storage
+    localStorage.setItem('token', response.token);
     // Retourner à la page d'accueil
     this.router.navigate(['/publicGalleries']);
   }
