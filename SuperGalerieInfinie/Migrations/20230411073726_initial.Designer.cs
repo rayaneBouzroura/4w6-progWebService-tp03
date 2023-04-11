@@ -12,8 +12,8 @@ using SuperGalerieInfinie.Data;
 namespace SuperGalerieInfinie.Migrations
 {
     [DbContext(typeof(SuperGalerieInfinieContext))]
-    [Migration("20230409032945_initialCreate")]
-    partial class initialCreate
+    [Migration("20230411073726_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

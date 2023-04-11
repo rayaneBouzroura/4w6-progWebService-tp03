@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SuperGalerieInfinie.Data;
@@ -14,22 +16,34 @@ namespace SuperGalerieInfinie.Controllers
     [ApiController]
     public class GaleriesController : ControllerBase
     {
+
+        UserManager<Utilisateur> UtilisateurManager;
         private readonly SuperGalerieInfinieContext _context;
 
-        public GaleriesController(SuperGalerieInfinieContext context)
+        public GaleriesController(SuperGalerieInfinieContext context , UserManager<Utilisateur> utilisateurManager)
         {
             _context = context;
+            UtilisateurManager = utilisateurManager;
         }
 
         // GET: api/Galeries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Galerie>>> GetGalerie()
         {
-          if (_context.Galerie == null)
-          {
-              return NotFound();
-          }
-            return await _context.Galerie.ToListAsync();
+            
+              if (_context.Galerie == null)
+              {
+                  return NotFound();
+              }
+
+            //recup du current user via le token
+            Utilisateur? utilisateur = await UtilisateurManager.FindByNameAsync(ClaimTypes.NameIdentifier);
+            //return await _context.Galerie.ToListAsync();
+            if(utilisateur != null)
+            {
+                return utilisateur.Galeries.ToList();
+            }
+            return StatusCode(StatusCodes.Status400BadRequest, new { Message = "utilisateur non trouver" });
         }
 
         // GET: api/Galeries/5
