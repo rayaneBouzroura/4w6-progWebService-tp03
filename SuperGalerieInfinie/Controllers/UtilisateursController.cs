@@ -15,10 +15,12 @@ namespace SuperGalerieInfinie.Controllers
     public class UtilisateursController : ControllerBase
     {
         readonly UserManager<Utilisateur> UtilisateurManager;
+        IConfiguration Config;
 
-        public UtilisateursController(UserManager<Utilisateur> utilisateurManager)
+        public UtilisateursController(UserManager<Utilisateur> utilisateurManager , IConfiguration configuration)
         {
             this.UtilisateurManager = utilisateurManager;
+            this.Config = configuration;
         }
 
         [HttpPost]
@@ -84,7 +86,7 @@ namespace SuperGalerieInfinie.Controllers
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     ValidTo = token.ValidTo
 
-                });
+                });//return json avec le token et la validation
             }
             else
             {
