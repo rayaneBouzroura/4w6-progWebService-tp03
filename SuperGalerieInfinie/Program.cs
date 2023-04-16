@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SuperGalerieInfinie.Data;
+using SuperGalerieInfinie.Data.Services;
 using SuperGalerieInfinie.Models;
 using System.Text;
 
@@ -56,6 +57,9 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("phrase suppppeeRR Long woooHoo Heck yeaaah je deprime."))
     };
 });
+
+//service utilisateur
+builder.Services.AddScoped<UtilisateurService>();
 
 // Ajoutez cette ligne pour ajouter les services d'autorisation
 builder.Services.AddAuthorization();

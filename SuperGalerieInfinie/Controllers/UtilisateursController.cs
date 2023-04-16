@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.IdentityModel.Tokens;
+using SuperGalerieInfinie.Data.Services;
 using SuperGalerieInfinie.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,13 +15,15 @@ namespace SuperGalerieInfinie.Controllers
     [ApiController]
     public class UtilisateursController : ControllerBase
     {
-        readonly UserManager<Utilisateur> UtilisateurManager;
+        //readonly UserManager<Utilisateur> UtilisateurManager;
+        readonly UtilisateurService _utilisateurService;
         IConfiguration Config;
 
-        public UtilisateursController(UserManager<Utilisateur> utilisateurManager , IConfiguration configuration)
+        public UtilisateursController(/*UserManager<Utilisateur>  utilisateurManager ,*/ IConfiguration configuration , UtilisateurService mutilisateurService)
         {
-            this.UtilisateurManager = utilisateurManager;
+            //this.UtilisateurManager = utilisateurManager;
             this.Config = configuration;
+            this._utilisateurService= mutilisateurService;
         }
 
         [HttpPost]
@@ -31,28 +34,26 @@ namespace SuperGalerieInfinie.Controllers
             {
                 return BadRequest("Les mots de passe ne correspondent pas.");
             }
+            return await _utilisateurService.RegisterAsync(register);
 
-            // Créer un nouvel utilisateur
-            var user = new Utilisateur
-            {
-                UserName = register.Username,
-                Email = register.Email,
-            };
+            //// Créer un nouvel utilisateur
+            //var user = new Utilisateur
+            //{
+            //    UserName = register.Username,
+            //    Email = register.Email,
+            //};
 
-            // Ajouter l'utilisateur à la base de données avec le mot de passe
-            IdentityResult identityResult = await UtilisateurManager.CreateAsync(user, register.Password);
+            //IdentityResult identityResult = await _utilisateurService.AddUserAsync(user, register.Password);
 
-            // Vérifier si la création a réussi
-            if (identityResult.Succeeded)
-            {
-                return Ok( new {Message = " wooohooo 😎😎"});
-            }
-            else
-            {
-                // La création a échoué, renvoyer un message d'erreur
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                        new {Message =   "La création de l'utilisateur a échoué." });
-            }
+            //if (identityResult.Succeeded)
+            //{
+            //    return Ok( new {Message = " wooohooo 😎😎"});
+            //}
+            //else
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError,
+            //            new {Message =   "La création de l'utilisateur a échoué." });
+            //}
             
 
         }
@@ -60,37 +61,17 @@ namespace SuperGalerieInfinie.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginDTO login)
         {
-            //recup du user
-            Utilisateur utilisateur = await UtilisateurManager.FindByNameAsync(login.Username);
+            
+            //ehhh...we return un bool et un objet psk jsp comment send un actionresult avec l'erreur si ca fail
+            var (isSuccessful, result) = await _utilisateurService.LoginAsync(login);
 
-            if(utilisateur != null && await UtilisateurManager.CheckPasswordAsync(utilisateur , login.Password))
+            if (isSuccessful)
             {
-                IList<string> roles = await UtilisateurManager.GetRolesAsync(utilisateur);//recup les roles
-                List<Claim> authClaims = new List<Claim>();
-                foreach (string role in roles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, role));//met le claim dans la liste authClaims tadaa
-                }
-                authClaims.Add(new Claim(ClaimTypes.NameIdentifier, utilisateur.Id));
-                SymmetricSecurityKey key = new SymmetricSecurityKey(
-                                           Encoding.UTF8.GetBytes("phrase suppppeeRR Long woooHoo Heck yeaaah je deprime."));
-                JwtSecurityToken token = new JwtSecurityToken(
-                    issuer: "https://localhost:7008",
-                    audience : "https://localhost:4200",
-                    claims: authClaims,
-                    expires: DateTime.Now.AddMinutes(30),
-                    signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
-                    );
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    ValidTo = token.ValidTo
-
-                });//return json avec le token et la validation
+                return Ok(result);
             }
             else
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "nom d'utilisateur et pw invalid" });
+                return StatusCode(StatusCodes.Status400BadRequest, result);
             }
         }
         [HttpPost]

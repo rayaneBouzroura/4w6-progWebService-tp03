@@ -65,7 +65,7 @@ namespace SuperGalerieInfinie.Data
                 Description = "Une galerie remplie de photos de chiens.",
                 EstPublique = false
             };
-
+            builder.Entity<Utilisateur>().HasData(u1, u2);
             builder.Entity<Galerie>().HasData(g1, g2);
 
             // Mapping de la relation many-to-many entre Utilisateur et Galerie
@@ -74,17 +74,11 @@ namespace SuperGalerieInfinie.Data
                    .WithMany(g => g.Utilisateurs)
                    .UsingEntity(e =>
                    {
-                       e.HasData(new { UtilisateursId = u1.Id ,GalerieId = u1});
+                       e.HasData(new { UtilisateursId = u1.Id , GaleriesId = g1.Id});
+                       e.HasData(new { UtilisateursId = u2.Id, GaleriesId = g2.Id });
                    });
 
-            //creer un password hasher pour utilisateur
-            //creation des deux utilisateur avec ID format guid , un username , email et mot de passe rando et farfelu houhouhou
-            //sans oublier de mettre le PasswordHash de l'utilisateur (clefs secrete : this.cfg["JWT:Secret"]; )
-            //suivi par builder.entity<User>().has data et l'objet creer en parametre
 
-            //suivit de la creation des deux galleries une pour chaque utilisateur une prive et une publique
-
-            //suivit du mapping de entity many to many donc .hasmany .withmany et usingentity avec lambda fonction qui cree 4 hasdata entre u1 u2 et les deux galleries
 
         }
     }
