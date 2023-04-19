@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace SuperGalerieInfinie.Models
 {
@@ -7,6 +8,7 @@ namespace SuperGalerieInfinie.Models
 
 
         // Propriété de navigation pour la relation many-to-many avec la classe Galerie
-        public virtual ICollection<Galerie> Galeries { get; set; } = null;
+        [System.Text.Json.Serialization.JsonIgnore]
+        public virtual List<Galerie>? Galeries { get; set; }
     }
 }

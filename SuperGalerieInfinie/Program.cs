@@ -60,6 +60,7 @@ builder.Services.AddAuthentication(options =>
 
 //service utilisateur
 builder.Services.AddScoped<UtilisateurService>();
+builder.Services.AddScoped<GalerieService>();
 
 // Ajoutez cette ligne pour ajouter les services d'autorisation
 builder.Services.AddAuthorization();

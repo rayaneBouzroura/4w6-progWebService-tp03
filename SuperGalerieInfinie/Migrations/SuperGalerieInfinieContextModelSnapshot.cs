@@ -290,15 +290,15 @@ namespace SuperGalerieInfinie.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "92bb3fc5-7f62-4e59-8fcd-0d19a23f84c0",
+                            ConcurrencyStamp = "bc614db2-2ce5-40da-8ebf-f7d3a3fe9e5e",
                             Email = "fluffy@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "FLUFFY@GMAIL.COM",
                             NormalizedUserName = "MISTERFLUFFY",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEqZgVmKkfHdC6HCipW5HZZJLO0Obf6dwjF4YY8IErUORmUYADW/VbSgazZBlq4rew==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEON7a7oq9BeoGupLFKHz/Dj9LYfLucnXEz40cX1+lUjAOPAIu38QylwJBlMnNNBvYA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f8199bdb-f07f-47d6-954f-1600bd955116",
+                            SecurityStamp = "fd2bcd2c-3a8e-4250-9da8-880ba9101e99",
                             TwoFactorEnabled = false,
                             UserName = "MisterFluffy"
                         },
@@ -306,15 +306,15 @@ namespace SuperGalerieInfinie.Migrations
                         {
                             Id = "22222222-2222-2222-2222-222222222222",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ca857351-0d2c-48bc-a975-bb40d39720c9",
+                            ConcurrencyStamp = "180d83a3-7b4d-4d62-8bc6-0aa9167bda54",
                             Email = "nemo@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NEMO@GMAIL.COM",
                             NormalizedUserName = "CAPTAINNEMO",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIaXxCvxCw83q6My+NcVKS/YYJVrsAjJG4gc+6jLKfUNXtDapFqK348+RHurXb8xbg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHoQbtAjpSHBH2uhqIIKQ5gbfjdLp+zy83ZMFgZjQc/aryb2Il4w68umRCmma4LGcw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ead74957-e427-4824-8823-e3778cbcf74a",
+                            SecurityStamp = "d61098de-732d-4fe7-bfa2-4bb346d33ed1",
                             TwoFactorEnabled = false,
                             UserName = "CaptainNemo"
                         });

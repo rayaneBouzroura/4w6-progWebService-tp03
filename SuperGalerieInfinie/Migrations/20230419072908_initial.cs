@@ -193,6 +193,34 @@ namespace SuperGalerieInfinie.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "11111111-1111-1111-1111-111111111111", 0, "bc614db2-2ce5-40da-8ebf-f7d3a3fe9e5e", "fluffy@gmail.com", false, false, null, "FLUFFY@GMAIL.COM", "MISTERFLUFFY", "AQAAAAEAACcQAAAAEON7a7oq9BeoGupLFKHz/Dj9LYfLucnXEz40cX1+lUjAOPAIu38QylwJBlMnNNBvYA==", null, false, "fd2bcd2c-3a8e-4250-9da8-880ba9101e99", false, "MisterFluffy" },
+                    { "22222222-2222-2222-2222-222222222222", 0, "180d83a3-7b4d-4d62-8bc6-0aa9167bda54", "nemo@gmail.com", false, false, null, "NEMO@GMAIL.COM", "CAPTAINNEMO", "AQAAAAEAACcQAAAAEHoQbtAjpSHBH2uhqIIKQ5gbfjdLp+zy83ZMFgZjQc/aryb2Il4w68umRCmma4LGcw==", null, false, "d61098de-732d-4fe7-bfa2-4bb346d33ed1", false, "CaptainNemo" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Galerie",
+                columns: new[] { "Id", "Description", "EstPublique", "Nom" },
+                values: new object[,]
+                {
+                    { 1, "Une galerie remplie de photos de chats.", true, "La galerie des chats" },
+                    { 2, "Une galerie remplie de photos de chiens.", false, "La galerie des chiens" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "GalerieUtilisateur",
+                columns: new[] { "GaleriesId", "UtilisateursId" },
+                values: new object[] { 1, "11111111-1111-1111-1111-111111111111" });
+
+            migrationBuilder.InsertData(
+                table: "GalerieUtilisateur",
+                columns: new[] { "GaleriesId", "UtilisateursId" },
+                values: new object[] { 2, "22222222-2222-2222-2222-222222222222" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

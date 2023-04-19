@@ -36,24 +36,7 @@ namespace SuperGalerieInfinie.Controllers
             }
             return await _utilisateurService.RegisterAsync(register);
 
-            //// Créer un nouvel utilisateur
-            //var user = new Utilisateur
-            //{
-            //    UserName = register.Username,
-            //    Email = register.Email,
-            //};
-
-            //IdentityResult identityResult = await _utilisateurService.AddUserAsync(user, register.Password);
-
-            //if (identityResult.Succeeded)
-            //{
-            //    return Ok( new {Message = " wooohooo 😎😎"});
-            //}
-            //else
-            //{
-            //    return StatusCode(StatusCodes.Status500InternalServerError,
-            //            new {Message =   "La création de l'utilisateur a échoué." });
-            //}
+          
             
 
         }
