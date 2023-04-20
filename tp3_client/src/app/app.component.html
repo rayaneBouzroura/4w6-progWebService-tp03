@@ -24,9 +24,9 @@
     <button mat-button aria-label="Bouton inscription" [routerLink]="['register']">
       <mat-icon>person</mat-icon>Inscription
     </button>
-    
+
     <!-- Bouton de déconnexion -->
-    <button mat-button aria-label="Bouton déconnexion">
+    <button mat-button aria-label="Bouton déconnexion" (click)="logout()">
       <mat-icon>directions_run</mat-icon>Déconnexion
     </button>
 

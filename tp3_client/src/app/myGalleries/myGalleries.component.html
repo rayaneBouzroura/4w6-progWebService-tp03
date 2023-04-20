@@ -11,56 +11,30 @@
 
     <div class="col-1 galleryList">
       <!-- Photos de couverture de galeries -->
-     <div class="galleryThumbnail">
-      <div>Galerie #1</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
-     </div>
+      <div *ngFor="let g of galeries">
+        <div class="galleryThumbnail" (click)="selectGalerie(g)">
+          <div>{{g.nom}}</div>
+          <img src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
+         </div>
+      </div>
 
-     <div class="galleryThumbnail">
-      <div>Galerie #2</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #2">
-     </div>
 
-     <div class="galleryThumbnail">
-      <div>Galerie #3</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #3">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #4</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #4">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #5</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #5">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #6</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #6">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #7</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #7">
-     </div>
 
     </div>
-  
+
     <div class="col-4 pictureList">
-      
+
       <div class="options newGallery">
         <h3>Nouvelle galerie : </h3>
-        <input type="text" name="newGalleryName" placeholder="Nom de la galerie">
+        <input type="text" name="newGalleryName" placeholder="Nom de la galerie" [(ngModel)]="nomGalerie">
 
         <!-- Pas d'image de couverture pour le moment, n'utilisez pas cet input ! -->
         <input type="file" name="newGalleryCoverPicture">
 
         <!-- Cet input peut être relié à une variable booléenne -->
-        <input type="checkbox" name="newGalleryIsPublic">Publique
+        <input type="checkbox" name="newGalleryIsPublic" [(ngModel)]="estPublique">Publique
 
-        <button mat-raised-button>Créer la galerie	<mat-icon>add_to_queue</mat-icon></button>
+        <button mat-raised-button (click)="creerGalerie()">Créer la galerie	<mat-icon>add_to_queue</mat-icon></button>
       </div>
       <hr>
        <!-- Options de la galerie sélectionnée -->
@@ -85,7 +59,7 @@
 
         <!-- Supprimer la galerie -->
         <div class="option">
-          <button mat-raised-button color="warn">Supprimer la galerie <mat-icon>delete</mat-icon></button>
+          <button mat-raised-button color="warn" (click)="deleteCurrentGalerie()">Supprimer la galerie <mat-icon>delete</mat-icon></button>
         </div>
       </div>
 
