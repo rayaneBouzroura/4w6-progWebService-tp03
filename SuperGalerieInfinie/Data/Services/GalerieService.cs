@@ -58,10 +58,21 @@ namespace SuperGalerieInfinie.Data.Services
             return _context.Galerie == null;
         }
 
+
         public async Task<Galerie?> UpdateGalerieAsync(int id, Galerie galerie)
         {
-            //remplace l'ancien comm avec le id specifique avec le nv comm
-            _context.Entry(galerie).State = EntityState.Modified;//System.InvalidOperationException: The instance of entity type 'Galerie' cannot be tracked because another instance with the same key 
+            // recup la galerie existante
+            var existingGalerie = await _context.Galerie.FindAsync(id);
+            if (existingGalerie == null)
+            {
+                return null;
+            }
+            //detach de cette entity
+            _context.Entry(existingGalerie).State = EntityState.Detached;
+
+            // Attach et update l'entite
+            _context.Entry(galerie).State = EntityState.Modified;
+
             //try catch avec le save changes 
             try
             {
@@ -84,6 +95,7 @@ namespace SuperGalerieInfinie.Data.Services
 
         public async Task CreateGalerieAsync(Utilisateur utilisateur, Galerie galerie)
         {
+
             // Check si liste utilisateurs ref non null dans galerie sinn pourra pas add
             if (galerie.Utilisateurs == null)
             {
@@ -100,6 +112,14 @@ namespace SuperGalerieInfinie.Data.Services
             //throw new NotImplementedException();
         }
 
-        
+        public async Task PartagerGalerie(Galerie galerie, Utilisateur utilisateur)
+        {
+            // Update la ref des deux obj
+            utilisateur.Galeries.Add(galerie);
+            galerie.Utilisateurs.Add(utilisateur);
+            // Save changes to la bd
+            await _context.SaveChangesAsync();
+      
+        }
     }
 }

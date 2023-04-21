@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { RegisterDTO } from '../models/RegisterDTO';
+import { UtilisateurService } from 'src/services/utilisateur.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,7 @@ import { RegisterDTO } from '../models/RegisterDTO';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(public router : Router,public http : HttpClient) { }
+  constructor(public router : Router,public http : HttpClient , public utilisateurService : UtilisateurService) { }
   //init des variables double binding pour creer le dto suivant le html
   registerUsername: string = "";
   registerEmail: string = "";
@@ -21,20 +22,18 @@ export class RegisterComponent implements OnInit {
   }
 
   async register() : Promise<void>{
-    // Création d'un nouvel objet RegisterDTO avec les données du formulaire
-    const registerDTO: RegisterDTO = {
-      username: this.registerUsername,
-      email: this.registerEmail,
-      password: this.registerPassword,
-      passwordConfirm: this.registerPasswordConfirm
-    };
-    ////appelle post oau niveau du endpoint api/Utilisateurs action Register qui prend un objet registerDTO
-    const response = await lastValueFrom(this.http.post<any>('https://localhost:7008/api/Utilisateurs/Register', registerDTO));
-    console.log(response);
-    // Aller vers la page de connexion
-    this.router.navigate(['/login']);
-  } catch (error : any) {
-    console.log(error);
-  }
+    try {
+      await this.utilisateurService.enregistrerUtilisateur(
+        this.registerUsername,
+        this.registerEmail,
+        this.registerPassword,
+        this.registerPasswordConfirm
+      );
+      // Aller vers la page de connexion
+      this.router.navigate(['/login']);
+    } catch (error : any) {
+      console.log(error);
+    }
 
+}
 }

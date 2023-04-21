@@ -209,6 +209,43 @@ namespace SuperGalerieInfinie.Controllers
             return Ok(new {Message = "Galerie supprime" });
         }
 
+
+        [HttpPut("{id}/{username}")]
+        public async Task<IActionResult> PartagerGalerie(int id, string username)
+        {
+            //user qui fait la req
+            Utilisateur? utilisateur = await _utilisateurService.GetUserByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            // Retrieve la gallery par id
+            var galerie = await _galerieService.GetGalerieByIdAsync(id);
+            //si dbset , user et galerie were not trouver return objet notfound();
+            if (_galerieService.IsGalerieEmpty() || galerie == null || utilisateur == null)
+            {
+                return NotFound();
+            }
+            //check si current user est proprio de la galerie
+            bool isProprio = _galerieService.doesBelong(utilisateur, galerie);
+            if (!isProprio)
+            {
+                return Unauthorized(new { Message = "la galerie do not belong a l'utilisateur actuel" });
+            }
+            //recup l'utilisateur avec qui ont partage
+            Utilisateur userToShareWith = await _utilisateurService.GetUserByNameAsync(username);
+
+            if (userToShareWith == null)
+            {
+                return NotFound(new { Message = "L'utilisateur n'a pas été trouvé" });
+            }
+            try
+            {
+                await _galerieService.PartagerGalerie(galerie, userToShareWith);
+                return Ok(new { Message = "Galerie partagée avec succès" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Une erreur s'est produite: "+ ex.Message });
+            }
+
+        }
         private bool GalerieExists(int id)
         {
             return (_context.Galerie?.Any(e => e.Id == id)).GetValueOrDefault();

@@ -35,11 +35,11 @@ namespace SuperGalerieInfinie.Data.Services
         Task<bool> GalerieExistsAsync(int id);
         bool IsGalerieEmpty();//check si dbset existe
         bool doesBelong(Utilisateur utilisateur,Galerie galerie);//check si la galerie apartient a l'utilisateur                      //
-        
-        
-        //Task<IEnumerable<Galerie>> GetGaleriesAsync(Utilisateur utilisateur);
-        
-    
-    
+        Task PartagerGalerie(Galerie galerie, Utilisateur utilisateur);
+
+
+
+
+
     }
 }

@@ -47,14 +47,14 @@
 
         <!-- Partager la galerie -->
         <div class="option">
-          <input type="text" name="newOwnerUsername" placeholder="Nom d'utilisateur">
-          <button mat-raised-button color="primary">Partager la galerie <mat-icon>supervised_user_circle</mat-icon></button>
+          <input type="text" name="newOwnerUsername" placeholder="Nom d'utilisateur" [(ngModel)]="personne">
+          <button mat-raised-button color="primary"(click)="partagerGalerie()">Partager la galerie <mat-icon>supervised_user_circle</mat-icon></button>
         </div>
 
         <!-- Changer la visibilité -->
         <div class="option">
-          <button mat-raised-button>Rendre privée <mat-icon>verified_user</mat-icon></button>
-          <button mat-raised-button>Rendre publique	<mat-icon>remove_red_eye</mat-icon></button>
+          <button mat-raised-button (click)="updateGalerieVisibility(false)">Rendre privée <mat-icon>verified_user</mat-icon></button>
+          <button mat-raised-button (click)="updateGalerieVisibility(true)">Rendre publique	<mat-icon>remove_red_eye</mat-icon></button>
         </div>
 
         <!-- Supprimer la galerie -->
@@ -64,8 +64,10 @@
       </div>
 
       <hr>
-      <!-- Photos de la galerie sélectionnée (Partie 2 !) -->
-      <h2>Photos de la galerie sélectionnée <mat-icon>photo_camera</mat-icon></h2>
+      <h2 *ngIf="galerie != null; else noGalerie">Photos de {{galerie.nom}} <mat-icon>photo_camera</mat-icon></h2>
+        <ng-template #noGalerie>
+          <h2>Photos de la galerie sélectionnée <mat-icon>photo_camera</mat-icon></h2>
+        </ng-template>
     </div>
 
   </div>

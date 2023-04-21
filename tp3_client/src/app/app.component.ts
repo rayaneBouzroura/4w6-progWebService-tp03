@@ -9,7 +9,9 @@ export class AppComponent {
 
 
   logout() {
+    alert("deconnection");
     localStorage.removeItem('token');
+    window.location.reload();
   }
 
 }
